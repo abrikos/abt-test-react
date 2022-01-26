@@ -18,6 +18,13 @@ const addUser = user => {
     return saveDb(items)
 }
 
+const deleteUser = (item) => {
+    const items = loadDb();
+    console.log('Delete user', item, items.filter(i => item.id !== i.id))
+    return saveDb(items.filter(i => item.id !== i.id));
+}
+
+
 const saveDb = data => {
     let maxId = getMaxId(data);
     console.log('Save data', maxId);
@@ -49,5 +56,5 @@ const loadDb = () => {
     }
     return ret;
 }
-export {saveDb, loadDb, addUser}
+export {saveDb, loadDb, addUser, deleteUser}
 

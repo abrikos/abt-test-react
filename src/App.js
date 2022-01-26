@@ -1,30 +1,34 @@
 import './app.sass';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import {useState} from 'react';
-import {loadDb, addUser} from './mock'
 import {Modal, Button, Form} from 'react-bootstrap';
 import moment from 'moment';
+import {useDispatch, useSelector} from 'react-redux';
+import {addItem, deleteItem, loadItems} from './store';
 
 function App() {
-    const [items, setItems] = useState([])
+    const dispatch = useDispatch();
     const [show, setShow] = useState(false);
     const [registration, setRegistration] = useState('');
     const [activity, setActivity] = useState('');
+    const items = useSelector((state) =>  state.userList)
+
     const handleClose = () => {
-        if(!(registration && activity)) return alert('Please select both dates')
-        if(!moment(registration).isValid()) return alert('Invalid registration date')
-        if(!moment(activity).isValid()) return alert('Invalid activity date')
-        setItems(addUser({registration, activity}))
+        if (!(registration && activity)) return alert('Please select both dates')
+        if (!moment(registration).isValid()) return alert('Invalid registration date')
+        if (!moment(activity).isValid()) return alert('Invalid activity date')
+        dispatch(addItem({registration, activity}))
         setShow(false);
     }
-    const randDate = () =>{
+
+    const randDate = () => {
         const rnd = Math.floor(Math.random() * (100)) + 1;
         const rnd2 = Math.floor(Math.random() * (100)) + 1;
         let r1, r2;
-        if(rnd2 < rnd) {
+        if (rnd2 < rnd) {
             r1 = rnd;
             r2 = rnd2
-        }else{
+        } else {
             r2 = rnd;
             r1 = rnd2
         }
@@ -39,7 +43,7 @@ function App() {
     }
 
     useState(() => {
-        setItems(loadDb())
+        dispatch(loadItems())
     })
 
     return (
@@ -63,12 +67,12 @@ function App() {
                     <td>{item.lifeDays}</td>
                     <td>{item.registeredDays}</td>
                     <td>
-                        <b-button variant="danger" size="sm">Delete</b-button>
+                        <Button variant="danger" size="sm" onClick={()=>dispatch(deleteItem(item))}>Delete</Button>
                     </td>
                 </tr>)}
                 </tbody>
             </table>
-            <Modal show={show} onHide={()=>setShow(false)}>
+            <Modal show={show} onHide={() => setShow(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>
@@ -76,7 +80,8 @@ function App() {
                     <Form>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Form.Label>Registration date</Form.Label>
-                            <Form.Control defaultValue={registration} onChange={({target}) => setRegistration(target.value)} type="calendar" placeholder="YYYY-MM-DD"/>
+                            <Form.Control defaultValue={registration} onChange={({target}) => setRegistration(target.value)} type="calendar"
+                                          placeholder="YYYY-MM-DD"/>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                             <Form.Label>Registration date</Form.Label>
@@ -86,7 +91,7 @@ function App() {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={()=>setShow(false)}>
+                    <Button variant="secondary" onClick={() => setShow(false)}>
                         Close
                     </Button>
                     <Button variant="primary" onClick={handleClose}>
