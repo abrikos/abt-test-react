@@ -20,14 +20,13 @@ const addUser = user => {
 
 const deleteUser = (item) => {
     const items = loadDb();
-    console.log('Delete user', item, items.filter(i => item.id !== i.id))
+    console.log('Delete user', item)
     return saveDb(items.filter(i => item.id !== i.id));
 }
 
-
 const saveDb = data => {
     let maxId = getMaxId(data);
-    console.log('Save data', maxId);
+    console.log('Save data');
     for (const item of data) {
         if (!item.id) {
             maxId++;
@@ -37,6 +36,7 @@ const saveDb = data => {
     localStorage.setItem('data', JSON.stringify(data));
     return loadDb();
 }
+
 const loadDb = () => {
     console.log('load data');
     let stored = []

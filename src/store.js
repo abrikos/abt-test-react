@@ -1,5 +1,5 @@
 import {configureStore, createSlice} from '@reduxjs/toolkit'
-import {loadDb, addUser, deleteUser} from './mock'
+import {loadDb, addUser, deleteUser, saveDb} from './mock'
 
 const slice = createSlice({
     name: 'userList',
@@ -20,8 +20,11 @@ const slice = createSlice({
         loadItems: (state) => {
             state.userList = loadDb();
         },
+        resetItems: (state) => {
+            state.userList = saveDb([]);
+        },
     },
 })
-export const {addItem, deleteItem, loadItems} = slice.actions
+export const {addItem, deleteItem, loadItems, resetItems} = slice.actions
 
 export default configureStore(slice)
