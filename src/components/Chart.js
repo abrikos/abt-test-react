@@ -127,11 +127,6 @@ export default function Chart() {
         return ret;
     }
 
-    function setLogarithmic() {
-        // TODO Why does this have no effect?
-        this.chartOptions.yaxis.logarithmic = this.logarithmic;
-    }
-
     function drawData() {
         const options = {...chartOptions};
         const ser = {

@@ -45,7 +45,7 @@ const loadDb = () => {
     } catch (e) {
         console.warn(e)
     }
-    if(!(stored && stored.length)){
+    if (!(stored && stored.length)) {
         saveDb(mock);
         stored = mock;
     }
